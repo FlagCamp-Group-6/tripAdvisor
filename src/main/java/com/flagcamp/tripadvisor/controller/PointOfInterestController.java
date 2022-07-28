@@ -1,5 +1,7 @@
 package com.flagcamp.tripadvisor.controller;
 
+import com.flagcamp.tripadvisor.model.PointOfInterest;
+import com.flagcamp.tripadvisor.service.PointOfInterestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,12 +16,17 @@ public class PointOfInterestController {
         this.pointOfInterestService = pointOfInterestService;
     }
 
-    @PostMapping("/stays")
+    @GetMapping(value = "/pointofinterest/{Id}")
+    public PointOfInterest getStay(@PathVariable Long Id) {
+        return pointOfInterestService.findByCurId(Id);
+    }
+
+    @PostMapping("/pointofinterest")
     public void addPointOfInterest(
             @RequestParam("name") String name,
             @RequestParam("address") String address,
-            @RequestParam("description") String description,
-            Principal principal) {
+            @RequestParam("description") String description
+            ) {
 
         PointOfInterest pointOfInterest = new PointOfInterest.Builder()
                 .setName(name)
@@ -29,9 +36,9 @@ public class PointOfInterestController {
         pointOfInterestService.add(pointOfInterest);
     }
 
-    @DeleteMapping("/stays/{stayId}")
-    public void deletePointOfInterest(@PathVariable Long stayId, Principal principal) {
-        pointOfInterestService.delete(pointOfInterestId, principal.getName());
+    @DeleteMapping("/pointofinterest/{Id}")
+    public void deletePointOfInterest(@PathVariable Long Id) {
+        pointOfInterestService.delete(Id);
     }
 
 
